@@ -1,0 +1,210 @@
+<div fxLayout="column" fxLayoutAlign="space-around center">
+  <img src="/assets/images/tu.png" />
+
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-form-field class="example-form-field">
+      <mat-label>К</mat-label>
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="K"
+        maxlength="1"
+        pattern="\d{1}"
+      />
+    </mat-form-field>
+    <div style="width: 20px"></div>
+    <p *ngIf="K != null">Цена на Концесията {{ 15000 + 1000 * K! }}</p>
+    <div style="width: 20px"></div>
+    <button mat-raised-button color="warn" (click)="solve()">Решение</button>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="start start">
+    <table>
+      <tr>
+        <th>Вероятно състояние</th>
+        <th>Вероятност за поява</th>
+        <th>Печалба</th>
+      </tr>
+      <tr>
+        <td><p>Остсъствие на ресурси</p></td>
+        <td><p>K/50</p></td>
+        <td><input type="number" [(ngModel)]="V2[0]" /></td>
+      </tr>
+      <tr>
+        <td><p>Наличие на само един ресурс от вид 1</p></td>
+        <td><p>K/50 + 0.16</p></td>
+        <td><input type="number" [(ngModel)]="V2[1]" /></td>
+      </tr>
+      <tr>
+        <td><p>Наличие на два ресурса</p></td>
+        <td><p>K/50 + 0.2</p></td>
+        <td><input type="number" [(ngModel)]="V2[2]" /></td>
+      </tr>
+      <tr>
+        <td><p>Наличие само на един ресурс от вид 2</p></td>
+        <td><p>0.63 - 3 * K/50</p></td>
+        <td><input type="number" [(ngModel)]="V2[3]" /></td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <th></th>
+        <th>|</th>
+        <th>||</th>
+        <th>|||</th>
+      </tr>
+      <tr>
+        <td><p>Остсъствие на ресурси</p></td>
+        <td><input type="number" [(ngModel)]="multi[0][0]" /></td>
+        <td><input type="number" [(ngModel)]="multi[0][1]" /></td>
+        <td><input type="number" [(ngModel)]="multi[0][2]" /></td>
+      </tr>
+      <tr>
+        <td><p>Наличие на само един ресурс от вид 1</p></td>
+        <td><input type="number" [(ngModel)]="multi[1][0]" /></td>
+        <td><input type="number" [(ngModel)]="multi[1][1]" /></td>
+        <td><input type="number" [(ngModel)]="multi[1][2]" /></td>
+      </tr>
+      <tr>
+        <td><p>Наличие на два ресурса</p></td>
+        <td><input type="number" [(ngModel)]="multi[2][0]" /></td>
+        <td><input type="number" [(ngModel)]="multi[2][1]" /></td>
+        <td><input type="number" [(ngModel)]="multi[2][2]" /></td>
+      </tr>
+      <tr>
+        <td><p>Наличие само на един ресурс от вид 2</p></td>
+        <td><input type="number" [(ngModel)]="multi[3][0]" /></td>
+        <td><input type="number" [(ngModel)]="multi[3][1]" /></td>
+        <td><input type="number" [(ngModel)]="multi[3][2]" /></td>
+      </tr>
+    </table>
+  </div>
+  <!-- генерирани, ако горните са въведени -->
+  <div *ngIf="solved">
+    <h1>Решение</h1>
+    <table *ngIf="K != null">
+      <tr>
+        <th>ϴ</th>
+        <th>V1</th>
+        <th>V2</th>
+        <th>ρ(𝜃)</th>
+        <th>ρ(ε1|ϴ)</th>
+        <th>ρ(ε2|ϴ)</th>
+        <th>ρ(ε3|ϴ)</th>
+      </tr>
+      <tr>
+        <td><p>ϴ1</p></td>
+        <td>
+          <p *ngIf="K != null">{{ 15000 + 1000 * K! }}</p>
+        </td>
+        <td>
+          <p>{{ V2[0] }}</p>
+        </td>
+        <td>
+          <p *ngIf="K != null">{{ K / 50 }}</p>
+        </td>
+        <td>
+          <p>{{ multi[0][0] / sumOfArray(multi[0]) }}</p>
+        </td>
+        <td>
+          <p>{{ multi[0][1] / sumOfArray(multi[0]) }}</p>
+        </td>
+        <td>
+          <p>{{ multi[0][2] / sumOfArray(multi[0]) }}</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>ϴ2</p></td>
+        <td>
+          <p *ngIf="K != null">{{ 15000 + 1000 * K! }}</p>
+        </td>
+        <td>
+          <p>{{ V2[1] }}</p>
+        </td>
+        <td>
+          <p *ngIf="K != null">{{ K / 50 + 0.16 }}</p>
+        </td>
+        <td>
+          <p>{{ multi[1][0] / sumOfArray(multi[1]) }}</p>
+        </td>
+        <td>
+          <p>{{ multi[1][1] / sumOfArray(multi[1]) }}</p>
+        </td>
+        <td>
+          <p>{{ multi[1][2] / sumOfArray(multi[1]) }}</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>ϴ3</p></td>
+        <td>
+          <p *ngIf="K != null">{{ 15000 + 1000 * K! }}</p>
+        </td>
+        <td>
+          <p>{{ V2[2] }}</p>
+        </td>
+        <td>
+          <p *ngIf="K != null">{{ K / 50 + 0.2 }}</p>
+        </td>
+        <td>
+          <p>{{ multi[2][0] / sumOfArray(multi[2]) }}</p>
+        </td>
+        <td>
+          <p>{{ multi[2][1] / sumOfArray(multi[2]) }}</p>
+        </td>
+        <td>
+          <p>{{ multi[2][2] / sumOfArray(multi[2]) }}</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>ϴ4</p></td>
+        <td>
+          <p *ngIf="K != null">{{ 15000 + 1000 * K! }}</p>
+        </td>
+        <td>
+          <p>{{ V2[3] }}</p>
+        </td>
+        <td>
+          <p *ngIf="K != null">{{ 0.64 - (3 * K) / 50 }}</p>
+        </td>
+        <td>
+          <p>{{ multi[3][0] / sumOfArray(multi[3]) }}</p>
+        </td>
+        <td>
+          <p>{{ multi[3][1] / sumOfArray(multi[3]) }}</p>
+        </td>
+        <td>
+          <p>{{ multi[3][2] / sumOfArray(multi[3]) }}</p>
+        </td>
+      </tr>
+    </table>
+
+    <table *ngIf="K != null">
+      <tr>
+        <th></th>
+        <th>ПЕ</th>
+      </tr>
+      <tr>
+        <td>Без проучване, но ЛВР използва ресурсите</td>
+        <td>{{ maxOfVSumProdPtita }}</td>
+      </tr>
+      <tr>
+        <td>Директна продажба</td>
+        <td>{{ 15000 + 1000 * K }}</td>
+      </tr>
+      <tr>
+        <td>
+          Направено е проучване и са използвани ресурсите (при цена за проучване
+          5000 ПЕ)
+        </td>
+        <td>{{ finalResult - 5000 }}</td>
+      </tr>
+      <tr>
+        <td>
+          Направено проучване без да се позлват ресуристе (при цена за проучване
+          5000 ПЕ)
+        </td>
+        <td>{{ 15000 + 1000 * K - 5000 }}</td>
+      </tr>
+    </table>
+  </div>
+</div>

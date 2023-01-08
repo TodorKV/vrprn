@@ -1,11 +1,18 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "ad19cf89-f71b-4827-9c86-78b0e0027d89"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cpvrprn": {
+    "waitless_fe": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cpvrprn",
+            "outputPath": "dist/waitless_fe",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -23,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -61,13 +69,16 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "port": 4201
+          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cpvrprn:build:production"
+              "browserTarget": "waitless_fe:build:production"
             },
             "development": {
-              "browserTarget": "cpvrprn:build:development"
+              "browserTarget": "waitless_fe:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cpvrprn:build"
+            "browserTarget": "waitless_fe:build"
           }
         },
         "test": {
@@ -90,6 +101,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -97,5 +109,6 @@
         }
       }
     }
-  }
+  },
+  "defaultProject": "waitless_fe"
 }
